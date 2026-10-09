@@ -1,0 +1,251 @@
+---
+import Base from "../layouts/Base.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import FeaturedCourse from "../components/FeaturedCourse.astro";
+import CourseCatalogue from "../components/CourseCatalogue.astro";
+import { getPublishedCourses, getFeaturedCourses } from "../lib/courses";
+import { SITE_NAME, SITE_URL, CREATOR_NAME, TELEGRAM_URL, toFa } from "../lib/site";
+
+const courses = await getPublishedCourses();
+const featured = getFeaturedCourses(courses);
+const rest = courses.filter((c) => !c.data.featured);
+const catalogue = [...featured, ...courses.filter((c) => !c.data.featured)];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: SITE_URL,
+  inLanguage: "fa",
+  author: { "@type": "Person", name: CREATOR_NAME },
+};
+---
+
+<Base title={SITE_NAME} path="/" jsonLd={jsonLd}>
+  <SiteHeader showFeaturedLink={featured.length > 0} />
+  <main id="main">
+    {/* ——— Hero ——— */}
+    <section
+      aria-labelledby="hero-title"
+      class="border-b border-line"
+    >
+      <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+        <p class="text-sm font-bold text-amber">
+          مرکز وب‌سایت‌های آموزشی دانیال رشیدی
+        </p>
+        <h1
+          id="hero-title"
+          class="mt-4 max-w-3xl text-4xl font-black leading-[1.4] text-ink sm:text-5xl sm:leading-[1.4]"
+        >
+          وب‌سایت‌هایی که درس‌های سخت را ساده می‌کنند
+        </h1>
+        <p class="prose-fa mt-5 max-w-2xl text-lg text-muted">
+          من برای درس‌هایی که یاد گرفتن‌شان سخت است، وب‌سایت آموزشی تعاملی
+          می‌سازم؛ با توضیح قدم‌به‌قدم و تمرین‌هایی که همان‌جا در مرورگر حل
+          می‌کنید. هر دوره یک وب‌سایت مستقل است — واردش شوید و شروع کنید.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a
+            href="#courses"
+            class="inline-flex min-h-[48px] items-center rounded-xl bg-pine px-6 py-3 text-base font-extrabold text-white hover:bg-pine-deep"
+          >
+            مشاهده دوره‌ها
+          </a>
+          <a
+            href={TELEGRAM_URL}
+            target="_blank"
+            rel="noopener"
+            class="link-underline inline-flex min-h-[48px] items-center px-2 text-base font-bold text-pine"
+          >
+            پیشنهاد دوره در تلگرام
+          </a>
+        </div>
+        {
+          courses.length > 0 && (
+            <p class="mt-8 border-t border-line pt-5 text-sm font-medium text-muted">
+              هم‌اکنون {toFa(courses.length)} دوره منتشر شده است — فهرست کامل پایین همین صفحه.
+            </p>
+          )
+        }
+      </div>
+    </section>
+
+    {/* ——— Featured ——— */}
+    {
+      featured.length > 0 && (
+        <section
+          id="featured"
+          aria-labelledby="featured-title"
+          class="mx-auto max-w-6xl scroll-mt-6 px-4 py-12 sm:px-6 sm:py-16"
+        >
+          <div class="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <p class="text-sm font-bold text-amber">پیشنهاد اول</p>
+              <h2
+                id="featured-title"
+                class="mt-1 text-2xl font-black text-ink sm:text-3xl"
+              >
+                دوره‌های ویژه
+              </h2>
+            </div>
+          </div>
+          <div class="grid gap-6">
+            {featured.map((course) => (
+              <FeaturedCourse course={course} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {/* ——— Catalogue ——— */}
+    <section
+      id="courses"
+      aria-labelledby="courses-title"
+      class="scroll-mt-6 border-t border-line bg-surface"
+    >
+      <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+        <p class="text-sm font-bold text-amber">فهرست مطالعه</p>
+        <h2
+          id="courses-title"
+          class="mt-1 text-2xl font-black text-ink sm:text-3xl"
+        >
+          همه دوره‌ها
+        </h2>
+        <p class="prose-fa mt-3 max-w-2xl text-muted">
+          هر ردیف، یک وب‌سایت آموزشی مستقل است. جست‌وجو کنید یا بر اساس
+          دسته‌بندی پالایش کنید.
+        </p>
+        <div class="mt-8">
+          {
+            catalogue.length > 0 ? (
+              <CourseCatalogue courses={catalogue} />
+            ) : (
+              <div class="rounded-2xl border border-dashed border-line bg-paper px-6 py-12 text-center">
+                <p class="text-xl font-extrabold text-ink">
+                  هنوز دوره‌ای منتشر نشده است.
+                </p>
+                <p class="prose-fa mx-auto mt-3 max-w-md text-muted">
+                  این مرکز تازه شروع به کار کرده است. اگر درسی هست که
+                  یادگیری‌اش برایتان سخت است، پیشنهاد بدهید.
+                </p>
+                <a
+                  href={TELEGRAM_URL}
+                  target="_blank"
+                  rel="noopener"
+                  class="mt-6 inline-flex min-h-[48px] items-center rounded-xl bg-pine px-6 py-3 text-base font-extrabold text-white hover:bg-pine-deep"
+                >
+                  پیشنهاد دوره در تلگرام
+                </a>
+              </div>
+            )
+          }
+        </div>
+        {/* Non-featured list note when catalogue exists but rest is empty */}
+        {
+          catalogue.length > 0 && rest.length === 0 && (
+            <p class="mt-6 text-sm text-muted">
+              همه دوره‌های منتشرشده بالا، ویژه هستند.
+            </p>
+          )
+        }
+      </div>
+    </section>
+
+    {/* ——— About ——— */}
+    <section
+      id="about"
+      aria-labelledby="about-title"
+      class="scroll-mt-6 border-t border-line"
+    >
+      <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+        <div class="grid gap-8 md:grid-cols-[1fr_280px]">
+          <div>
+            <p class="text-sm font-bold text-amber">درباره پروژه</p>
+            <h2
+              id="about-title"
+              class="mt-1 text-2xl font-black text-ink sm:text-3xl"
+            >
+              چرا این وب‌سایت‌ها را می‌سازم
+            </h2>
+            <div class="prose-fa mt-5 max-w-2xl space-y-4 text-muted">
+              <p>
+                بعضی درس‌ها با یک بار خواندن جزوه جا نمی‌افتند؛ باید مثال را
+                قدم‌به‌قدم دید و همان‌جا تمرین کرد. من این وب‌سایت‌ها را
+                می‌سازم تا همین کار را راحت کنند: توضیح ساده، مثال تعاملی و
+                تمرین داخل مرورگر.
+              </p>
+              <p>
+                این مرکز، فهرست همه آن وب‌سایت‌هاست؛ هر دوره مستقل است و بدون
+                حاشیه، مستقیم می‌بردتان سر اصل مطلب. اگر جایی گیر کردید یا
+                جای درسی خالی است، در تلگرام بگویید.
+              </p>
+            </div>
+          </div>
+          <aside
+            aria-label="یادداشت حاشیه‌ای"
+            class="h-fit rounded-2xl border border-line bg-wash p-6"
+          >
+            <p class="text-sm font-bold text-ink">روش کار هر دوره</p>
+            <ul class="mt-3 space-y-2 text-sm leading-7 text-muted">
+              <li>توضیح ساده و قدم‌به‌قدم</li>
+              <li>مثال‌هایی که می‌شود دست‌کاری‌شان کرد</li>
+              <li>تمرین همان‌جا، داخل مرورگر</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    {/* ——— Suggest ——— */}
+    <section
+      id="suggest"
+      aria-labelledby="suggest-title"
+      class="scroll-mt-6 border-t border-line bg-pine-deep text-white"
+    >
+      <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+        <div
+          class="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between"
+        >
+          <div class="max-w-2xl">
+            <h2
+              id="suggest-title"
+              class="text-2xl font-black sm:text-3xl"
+            >
+              جای چه دوره‌ای خالی است؟
+            </h2>
+            <p class="mt-3 leading-8 text-white/85">
+              اگر درسی هست که یادگیری‌اش برایتان سخت است، در تلگرام به من
+              پیام بدهید و بگویید دقیقاً کجایش گیر می‌کند. همین پیام‌ها
+              مشخص می‌کنند دوره بعدی چه باشد.
+            </p>
+          </div>
+          <a
+            href={TELEGRAM_URL}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex min-h-[52px] shrink-0 items-center gap-2 rounded-xl bg-white px-7 py-3.5 text-base font-extrabold text-pine-deep hover:bg-paper"
+          >
+            <svg
+              aria-hidden="true"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="m22 2-7 20-4-9-9-4Z" />
+              <path d="M22 2 11 13" />
+            </svg>
+            پیشنهاد دوره در تلگرام
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</Base>

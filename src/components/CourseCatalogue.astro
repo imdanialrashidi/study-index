@@ -1,0 +1,169 @@
+---
+import type { Course } from "../lib/courses";
+import { getSubjects } from "../lib/courses";
+import CourseRow from "./CourseRow.astro";
+
+interface Props {
+  courses: Course[];
+}
+
+const { courses } = Astro.props;
+const subjects = getSubjects(courses);
+---
+
+<div data-catalogue>
+  <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <div class="max-w-xl">
+      <label
+        for="course-search"
+        class="text-sm font-bold text-ink"
+      >
+        جست‌وجو در دوره‌ها
+      </label>
+      <input
+        id="course-search"
+        type="search"
+        data-course-search
+        autocomplete="off"
+        placeholder="نام درس، موضوع یا برچسب…"
+        class="mt-2 min-h-[48px] w-full rounded-xl border border-line bg-surface px-4 py-3 text-base text-ink placeholder:text-muted/70"
+      />
+    </div>
+    {
+      subjects.length > 1 && (
+        <div
+          role="group"
+          aria-label="پالایش بر اساس دسته‌بندی"
+          class="flex gap-2 overflow-x-auto pb-1"
+          data-subject-group
+        >
+          <button
+            type="button"
+            data-subject-filter="all"
+            aria-pressed="true"
+            class="min-h-[44px] shrink-0 rounded-full border border-pine bg-pine px-4 py-2 text-sm font-bold text-white"
+          >
+            همه
+          </button>
+          {subjects.map((subject) => (
+            <button
+              type="button"
+              data-subject-filter={subject}
+              aria-pressed="false"
+              class="min-h-[44px] shrink-0 rounded-full border border-line bg-surface px-4 py-2 text-sm font-bold text-muted"
+            >
+              {subject}
+            </button>
+          ))}
+        </div>
+      )
+    }
+  </div>
+
+  <p
+    aria-live="polite"
+    data-course-count
+    class="mt-4 text-sm font-medium text-muted"
+  >
+  </p>
+
+  <div data-course-list class="mt-2 border-b border-line">
+    {
+      courses.map((course, i) => (
+        <CourseRow course={course} index={i} />
+      ))
+    }
+  </div>
+
+  <div
+    data-course-empty
+    hidden
+    class="rounded-2xl border border-dashed border-line bg-surface px-6 py-10 text-center"
+  >
+    <p class="text-lg font-extrabold text-ink">دوره‌ای پیدا نشد.</p>
+    <p class="prose-fa mx-auto mt-2 max-w-md text-sm text-muted">
+      عبارت دیگری را امتحان کنید یا پالایش دسته‌بندی را بردارید.
+    </p>
+  </div>
+</div>
+
+<script>
+  // Lightweight catalogue filtering — no framework, no network.
+  // Rows carry `data-haystack` (title + subject + description + tags)
+  // and `data-subject`; this script only toggles `hidden`.
+  function normalize(value: string): string {
+    return value
+      .replace(/[ي]/g, "ی")
+      .replace(/[ك]/g, "ک")
+      .replace(/[\u200C\s]+/g, " ")
+      .trim();
+  }
+
+  function initCatalogue(root: ParentNode): void {
+    const catalogue = root.querySelector("[data-catalogue]");
+    if (!(catalogue instanceof HTMLElement)) return;
+    const search = catalogue.querySelector("[data-course-search]");
+    const count = catalogue.querySelector("[data-course-count]");
+    const empty = catalogue.querySelector("[data-course-empty]");
+    const rows = [...catalogue.querySelectorAll("[data-course-row]")].filter(
+      (el): el is HTMLElement => el instanceof HTMLElement,
+    );
+    const buttons = [
+      ...catalogue.querySelectorAll("[data-subject-filter]"),
+    ].filter((el): el is HTMLButtonElement => el instanceof HTMLButtonElement);
+    if (!(search instanceof HTMLInputElement)) return;
+    const searchInput = search;
+
+    let activeSubject = "all";
+    const total = rows.length;
+
+    function describeCount(visible: number): string {
+      const fa = (n: number) =>
+        String(n).replace(/[0-9]/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]);
+      if (visible === total) return `نمایش همه ${fa(total)} دوره`;
+      if (visible === 0) return "هیچ دوره‌ای با این مشخصات نیست";
+      return `${fa(visible)} دوره از ${fa(total)} دوره`;
+    }
+
+    function apply(): void {
+      const query = normalize(searchInput.value);
+      let visible = 0;
+      for (const row of rows) {
+        const haystack = normalize(row.dataset.haystack ?? "");
+        const matchesQuery = query === "" || haystack.includes(query);
+        const matchesSubject =
+          activeSubject === "all" || row.dataset.subject === activeSubject;
+        const show = matchesQuery && matchesSubject;
+        row.hidden = !show;
+        if (show) visible += 1;
+      }
+      if (count) count.textContent = describeCount(visible);
+      if (empty instanceof HTMLElement) empty.hidden = visible !== 0;
+    }
+
+    function paintButtons(): void {
+      for (const button of buttons) {
+        const active = button.dataset.subjectFilter === activeSubject;
+        button.setAttribute("aria-pressed", String(active));
+        button.classList.toggle("bg-pine", active);
+        button.classList.toggle("border-pine", active);
+        button.classList.toggle("text-white", active);
+        button.classList.toggle("bg-surface", !active);
+        button.classList.toggle("border-line", !active);
+        button.classList.toggle("text-muted", !active);
+      }
+    }
+
+    searchInput.addEventListener("input", apply);
+    for (const button of buttons) {
+      button.addEventListener("click", () => {
+        activeSubject = button.dataset.subjectFilter ?? "all";
+        paintButtons();
+        apply();
+      });
+    }
+    apply();
+  }
+
+  initCatalogue(document);
+</script>

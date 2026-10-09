@@ -1,0 +1,87 @@
+---
+import { SITE_NAME, TELEGRAM_URL } from "../lib/site";
+import Logo from "./Logo.astro";
+
+interface Props {
+  showFeaturedLink: boolean;
+}
+
+const { showFeaturedLink } = Astro.props;
+---
+
+<header class="border-b border-line bg-paper">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="flex items-center justify-between gap-3 py-4">
+      <a
+        href="/"
+        class="flex items-center gap-3"
+        aria-label={`${SITE_NAME} — صفحه اصلی`}
+      >
+        <span class="shrink-0 leading-none">
+          <Logo size={40} />
+        </span>
+        <span class="leading-tight">
+          <span class="block text-base font-extrabold text-ink"
+            >مرکز مطالعه</span
+          >
+          <span class="block text-xs font-medium text-muted"
+            >دانیال رشیدی</span
+          >
+        </span>
+      </a>
+      <a
+        href={TELEGRAM_URL}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-pine px-4 py-2 text-sm font-bold text-white hover:bg-pine-deep"
+      >
+        <svg
+          aria-hidden="true"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m22 2-7 20-4-9-9-4Z" />
+          <path d="M22 2 11 13" />
+        </svg>
+        پیام در تلگرام
+      </a>
+    </div>
+    <nav
+      aria-label="ناوبری اصلی"
+      class="flex gap-1 overflow-x-auto pb-3 text-sm font-bold text-muted"
+    >
+      {showFeaturedLink && (
+        <a
+          href="#featured"
+          class="whitespace-nowrap rounded-full px-3 py-2 hover:text-pine"
+        >
+          دوره‌های ویژه
+        </a>
+      )}
+      <a
+        href="#courses"
+        class="whitespace-nowrap rounded-full px-3 py-2 hover:text-pine"
+      >
+        همه دوره‌ها
+      </a>
+      <a
+        href="#about"
+        class="whitespace-nowrap rounded-full px-3 py-2 hover:text-pine"
+      >
+        درباره پروژه
+      </a>
+      <a
+        href="#suggest"
+        class="whitespace-nowrap rounded-full px-3 py-2 hover:text-pine"
+      >
+        پیشنهاد دوره
+      </a>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,70 @@
+---
+import {
+  CREATOR_NAME,
+  CREATOR_HANDLE,
+  TELEGRAM_URL,
+  GITHUB_PAGES_URL,
+  PERSONAL_SITE_URL,
+} from "../lib/site";
+import Logo from "./Logo.astro";
+
+const year = new Intl.DateTimeFormat("fa-IR", { year: "numeric" }).format(
+  new Date(),
+);
+---
+
+<footer class="border-t border-line bg-wash">
+  <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+    <div
+      class="flex flex-col gap-8 md:flex-row md:items-start md:justify-between"
+    >
+      <div class="max-w-md">
+        <p class="flex items-center gap-2.5 text-lg font-extrabold text-ink">
+          <Logo size={30} />
+          مرکز مطالعه
+        </p>
+        <p class="prose-fa mt-2 text-sm text-muted">
+          وب‌سایت‌های آموزشی تعاملی ساخته {CREATOR_NAME} ({CREATOR_HANDLE})؛
+          برای ساده‌تر شدن یادگیری درس‌های سخت.
+        </p>
+      </div>
+      <nav aria-label="پیوندهای سازنده">
+        <p class="text-sm font-bold text-ink">دانیال رشیدی</p>
+        <ul class="mt-3 space-y-2 text-sm font-medium">
+          <li>
+            <a
+              href={TELEGRAM_URL}
+              target="_blank"
+              rel="noopener"
+              class="link-underline text-pine"
+              >تلگرام: <bdi dir="ltr">@imdanialrashidi</bdi></a
+            >
+          </li>
+          <li>
+            <a
+              href={GITHUB_PAGES_URL}
+              target="_blank"
+              rel="noopener"
+              class="link-underline text-pine"
+              dir="ltr"
+              >imdanialrashidi.github.io</a
+            >
+          </li>
+          <li>
+            <a
+              href={PERSONAL_SITE_URL}
+              target="_blank"
+              rel="noopener"
+              class="link-underline text-pine"
+              dir="ltr"
+              >danialrashidi.ir</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <p class="mt-8 border-t border-line pt-5 text-xs text-muted">
+      © {year} {CREATOR_NAME} — همه دوره‌ها وب‌سایت‌های آموزشی مستقل‌اند.
+    </p>
+  </div>
+</footer>

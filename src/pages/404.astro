@@ -1,0 +1,30 @@
+---
+import Base from "../layouts/Base.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+---
+
+<Base
+  title="صفحه پیدا نشد"
+  description="صفحه موردنظر در مرکز مطالعه پیدا نشد."
+  path="/404/"
+  noindex
+>
+  <SiteHeader showFeaturedLink={false} />
+  <main id="main">
+    <div class="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6">
+      <p class="text-7xl font-black text-amber/80" aria-hidden="true">۴۰۴</p>
+      <h1 class="mt-4 text-2xl font-black text-ink">این صفحه پیدا نشد.</h1>
+      <p class="prose-fa mx-auto mt-3 text-muted">
+        نشانی را بررسی کنید یا از فهرست دوره‌ها شروع کنید.
+      </p>
+      <a
+        href="/"
+        class="mt-8 inline-flex min-h-[48px] items-center rounded-xl bg-pine px-6 py-3 text-base font-extrabold text-white hover:bg-pine-deep"
+      >
+        بازگشت به صفحه اصلی
+      </a>
+    </div>
+  </main>
+  <SiteFooter />
+</Base>

@@ -1,0 +1,79 @@
+@import "tailwindcss";
+@import "@fontsource/vazirmatn/400.css";
+@import "@fontsource/vazirmatn/500.css";
+@import "@fontsource/vazirmatn/700.css";
+@import "@fontsource/vazirmatn/800.css";
+@import "@fontsource/vazirmatn/900.css";
+
+/* Canonical design tokens — study.danialrashidi.ir
+   Intent lives in docs/DESIGN.md; resolved values live here. */
+
+@theme {
+  --font-sans: "Vazirmatn", "Tahoma", "Segoe UI", sans-serif;
+
+  --color-paper: #faf8f1;
+  --color-surface: #ffffff;
+  --color-ink: #1c1917;
+  --color-muted: #57534e;
+  --color-pine: #166534;
+  --color-pine-deep: #14532d;
+  --color-amber: #92400e;
+  --color-line: #e5ddcb;
+  --color-wash: #f1ecdf;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Readable Persian prose: generous line-height, capped measure. */
+.prose-fa {
+  line-height: 2;
+  max-width: 65ch;
+}
+
+/* Links: always underlined on body copy so they never rely on color alone. */
+.link-underline {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+a {
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+/* Accessible focus everywhere: 2px pine ring + offset, never outline:none. */
+:where(a, button, input, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-pine);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--color-pine);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

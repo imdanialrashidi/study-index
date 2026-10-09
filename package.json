@@ -1,0 +1,27 @@
+{
+  "name": "study-hub",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Study Hub — directory of interactive educational websites by Danial Rashidi (study.danialrashidi.ir)",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.4.1",
+    "@fontsource/vazirmatn": "5.2.5",
+    "astro": "5.13.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@tailwindcss/vite": "4.1.12",
+    "tailwindcss": "4.1.12",
+    "typescript": "5.9.2"
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  }
+}
