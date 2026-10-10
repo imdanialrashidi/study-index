@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="جلد دوره فیزیک ۲">
+  <rect width="1200" height="630" fill="#14532D"/>
+  <!-- field lines -->
+  <g fill="none" stroke="#FAF8F1" opacity="0.22" stroke-width="2.5">
+    <path d="M-40 140 Q 150 90 340 140 T 730 140 T 1120 140"/>
+    <path d="M-40 230 Q 150 180 340 230 T 730 230 T 1120 230"/>
+    <path d="M-40 320 Q 150 270 340 320 T 730 320 T 1120 320"/>
+  </g>
+  <!-- charges -->
+  <g font-family="Tahoma, sans-serif" font-size="34" font-weight="bold" text-anchor="middle">
+    <circle cx="180" cy="430" r="34" fill="none" stroke="#FAF8F1" stroke-width="2.5" opacity="0.8"/>
+    <text x="180" y="443" fill="#FAF8F1" opacity="0.9">+</text>
+    <circle cx="300" cy="480" r="34" fill="#FAF8F1" opacity="0.16"/>
+    <circle cx="300" cy="480" r="34" fill="none" stroke="#FAF8F1" stroke-width="2.5" opacity="0.8"/>
+    <text x="300" y="493" fill="#FAF8F1" opacity="0.9">−</text>
+  </g>
+  <!-- amber accent: orbit -->
+  <g fill="none" stroke="#E8A33D" stroke-width="3" opacity="0.9">
+    <ellipse cx="880" cy="160" rx="120" ry="44" transform="rotate(-18 880 160)"/>
+  </g>
+  <circle cx="880" cy="160" r="12" fill="#E8A33D"/>
+  <circle cx="972" cy="122" r="7" fill="#FAF8F1" opacity="0.85"/>
+  <!-- formulas -->
+  <g font-family="Tahoma, sans-serif" fill="#FAF8F1" opacity="0.55" font-size="30" text-anchor="middle">
+    <text x="180" y="120" direction="ltr">F = qE</text>
+    <text x="420" y="90" direction="ltr">∮ B·dl = μ₀I</text>
+  </g>
+  <!-- frame -->
+  <rect x="48" y="48" width="1104" height="534" fill="none" stroke="#FAF8F1" stroke-width="3"/>
+  <line x1="48" y1="470" x2="1152" y2="470" stroke="#FAF8F1" stroke-width="2" opacity="0.6"/>
+  <text x="1050" y="250" font-family="Tahoma, sans-serif" font-size="96" font-weight="900" fill="#FAF8F1" text-anchor="end">فیزیک ۲</text>
+  <text x="1050" y="330" font-family="Tahoma, sans-serif" font-size="40" font-weight="bold" fill="#E8A33D" text-anchor="end">الکتریسیته و مغناطیس</text>
+  <text x="1050" y="415" font-family="Tahoma, sans-serif" font-size="34" fill="#FAF8F1" opacity="0.85" text-anchor="end">وب‌سایت آموزشی تعاملی</text>
+  <text x="600" y="560" font-family="Tahoma, sans-serif" font-size="30" fill="#FAF8F1" opacity="0.85" text-anchor="middle">study.danialrashidi.ir</text>
+</svg>
